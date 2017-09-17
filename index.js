@@ -328,11 +328,20 @@ export default class Drawer extends Component {
   };
 
   processTapGestures = () => {
-    if (this._activeTween) return false // disable tap gestures during tween
-    if (this.props.acceptTap || (this.props.tapToClose && this._open)) {
-      this._open ? this.close() : this.open()
-      return true
+    if (this._activeTween) return false;
+
+    if (this.props.acceptTap && !this._open) {
+      this.open();
+
+      return true;
     }
+
+    if (this._open && this.props.tapToClose) {
+      this.close();
+
+      return true;
+    }
+
     if (this.props.acceptDoubleTap) {
       let now = new Date().getTime()
       let timeDelta = now - this._lastPress
